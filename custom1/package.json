@@ -1,0 +1,11 @@
+{
+  "name": "custom1",
+  "version": "0.0.1",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "author": "Indrajit Raychaudhuri",
+  "license": "ISC"
+}
