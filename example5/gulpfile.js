@@ -10,4 +10,4 @@ gulp.task('fonts', function () {
 		;
 	});
 
-gulp.task('default', ['fonts']);
+// gulp.task('default', ['fonts']);
