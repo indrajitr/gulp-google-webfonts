@@ -1,41 +1,27 @@
 const gulp = require("gulp");
-var del = require("del");
+const del = require("del");
 const googleWebFonts = require("../");
 
-const options = {
-  fontsDir: "fonts/",
-  cssDir: "css/",
-  //   cssFilename: "myGoogleFonts.css",
-};
+const formats = ["woff", "woff2", "eot", "ttf", "svg"];
+const options = { fontsDir: "fonts/", cssDir: "css/" };
 
-const woff_options = {
-  ...options,
-  format: "woff",
-  cssFilename: "fonts.woff.css",
-};
+const clean = () => del(["out/export"]);
 
-const woff2_options = {
-  ...options,
-  format: "woff2",
-  cssFilename: "fonts.woff2.css",
-};
+const retrieve =
+  (fmt = "woff") =>
+  () =>
+    gulp
+      .src("./fonts.list")
+      .pipe(
+        googleWebFonts({
+          ...options,
+          format: fmt,
+          cssFilename: `fonts.${fmt}.css`,
+        })
+      )
+      .pipe(gulp.dest("out/export"));
 
-const clean = function () {
-  return del(["out/export"]);
-};
-
-const woff = function () {
-  return gulp
-    .src("./fonts.list")
-    .pipe(googleWebFonts(woff_options))
-    .pipe(gulp.dest("out/export"));
-};
-
-const woff2 = function () {
-  return gulp
-    .src("./fonts.list")
-    .pipe(googleWebFonts(woff2_options))
-    .pipe(gulp.dest("out/export"));
-};
-
-gulp.task("default", gulp.series(clean, gulp.parallel(woff, woff2)));
+gulp.task(
+  "default",
+  gulp.series(clean, gulp.parallel(formats.map((f) => retrieve(f))))
+);
